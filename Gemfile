@@ -14,6 +14,7 @@ gem "sdoc", "~> 0.4.0", { group: :doc }
 # gem "unicorn"
 
 gem "capistrano-rails", { group: :development }
+gem "capistrano-passenger", { group: :development }
 
 group :development, :test do
   gem "byebug"

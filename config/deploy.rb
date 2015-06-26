@@ -5,6 +5,7 @@ set :application, "fantasy-celebrity-api"
 set :repo_url, "git@github.com:gmassanek/fantasy-celebrity-api.git"
 
 set :assets_roles, []
+set :passenger_restart_with_touch, true
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -39,10 +40,10 @@ set :branch, ENV["BRANCH"] || "master"
 
 namespace :deploy do
   after :restart, :clear_cache do
-    on roles(:web), { in: :groups, limit: 3, wait: 10 } do
-      within release_path do
-        execute "mkdir tmp && touch tmp/restart.txt"
-      end
-    end
+    #on roles(:web), { in: :groups, limit: 3, wait: 10 } do
+    #  within release_path do
+    #    execute "mkdir tmp && touch tmp/restart.txt"
+    #  end
+    #end
   end
 end
