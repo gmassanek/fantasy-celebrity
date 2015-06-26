@@ -10,11 +10,10 @@ gem "sdoc", "~> 0.4.0", { group: :doc }
 # Use ActiveModel has_secure_password
 # gem "bcrypt", "~> 3.1.7"
 
-# Use Unicorn as the app server
-# gem "unicorn"
+gem 'puma', '~> 2.11.3'
 
 gem "capistrano-rails", { group: :development }
-gem "capistrano-passenger", { group: :development }
+gem 'capistrano3-puma', { group: :development }
 
 group :development, :test do
   gem "byebug"
