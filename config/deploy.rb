@@ -5,6 +5,7 @@ set :application, "fantasy-celebrity-api"
 set :repo_url, "git@github.com:gmassanek/fantasy-celebrity-api.git"
 
 set :assets_roles, []
+set :passenger_restart_with_touch, true
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
