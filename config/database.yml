@@ -80,9 +80,10 @@ test: &test
 #
 production:
   <<: *default
-  database: fantasy-celebrity-api_production
-  username: fantasy-celebrity-api
-  password: <%= ENV['FANTASY-CELEBRITY-API_DATABASE_PASSWORD'] %>
+  database: fantasy_celebrity_api_production
+  username: fantasy_celebrity_api
+  password: <%= ENV['FANTASY_CELEBRITY_API_DATABASE_PASSWORD'] %>
+  host: localhost
 
 cucumber:
   <<: *test
