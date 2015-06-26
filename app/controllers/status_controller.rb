@@ -1,5 +1,5 @@
 class StatusController < ApplicationController
   def index
-    render({ json: { status: "OK", revision: `/var/www/fantasy-celebrity-api/current/REVISION`.try(:chomp) } })
+    render({ json: { status: "OK" } })
   end
 end
