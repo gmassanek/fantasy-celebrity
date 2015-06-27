@@ -1,3 +1,3 @@
 [submodule "fantasy-celebrity-front-end"]
-	path = fantasy-celebrity-front-end
-	url = git@github.com:gmassanek/fantasy-celebrity-front-end.git
+  path = fantasy-celebrity-front-end
+  url = https://github.com/gmassanek/fantasy-celebrity-front-end.git
