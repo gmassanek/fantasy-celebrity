@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "rack-cors"
 gem "rails", "4.2.2"
 gem "pg"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -14,6 +15,7 @@ gem "puma", "~> 2.11.3"
 
 gem "capistrano-rails", { group: :development }
 gem "capistrano3-puma", { group: :development }
+gem "foreman", { group: :development }
 
 group :development, :test do
   gem "byebug"
