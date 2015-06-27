@@ -1,0 +1,7 @@
+cache:
+  bundler: true
+
+before_install:
+- "npm config set spin false"
+
+script: HEADLESS=true RACK_ENV=test bin/rake db:create test

@@ -1,34 +1,34 @@
 source "https://rubygems.org"
 
+gem "jbuilder", "~> 2.0"
+gem "pg"
+gem "puma", "~> 2.11.3"
 gem "rack-cors"
 gem "rails", "4.2.2"
-gem "pg"
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem "jbuilder", "~> 2.0"
-# bundle exec rake doc:rails generates the API under doc/api.
-gem "sdoc", "~> 0.4.0", { group: :doc }
 
-# Use ActiveModel has_secure_password
-# gem "bcrypt", "~> 3.1.7"
-
-gem "puma", "~> 2.11.3"
-
-gem "capistrano-rails", { group: :development }
-gem "capistrano3-puma", { group: :development }
-gem "foreman", { group: :development }
+group :development do
+  gem "capistrano-rails"
+  gem "capistrano3-puma"
+  gem "foreman"
+end
 
 group :development, :test do
   gem "byebug"
-  gem "spring"
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem "web-console", "~> 2.0"
-
   gem "rspec-rails", "~> 3.0"
-  gem "rubocop", { require: false }
+  gem "spring"
+  gem "web-console", "~> 2.0"
+end
+
+group :doc do
+  gem "sdoc", "~> 0.4.0"
 end
 
 group :test do
+  gem "bundler-audit"
   gem "cucumber-rails", { require: false }
   gem "database_cleaner"
+  gem "launchy"
+  gem "poltergeist"
+  gem "rubocop", { require: false }
+  gem "selenium-webdriver"
 end
