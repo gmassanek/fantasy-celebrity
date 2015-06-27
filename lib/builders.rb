@@ -2,7 +2,7 @@ require "rack"
 require ::File.expand_path("../../config/environment", __FILE__)
 
 module Builders
-  UI_ROOT = "fantasy-celebrity-front-end/dist".freeze
+  UI_ROOT = "public".freeze
 
   API = Rack::Builder.new do
     run(Rails.application)
