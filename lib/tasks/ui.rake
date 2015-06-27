@@ -6,6 +6,7 @@ namespace :ui do
     begin
       FileUtils.cd("fantasy-celebrity-front-end")
       system("npm install")
+      system("bower install")
       system("ember build -e production")
 
       dist_path = "fantasy-celebrity-front-end/dist"
