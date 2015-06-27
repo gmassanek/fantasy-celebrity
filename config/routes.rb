@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
       resources :leagues do
         resources :point_categories, { only: [:index] }
+        resources :positions, { only: [:index] }
       end
     end
   end

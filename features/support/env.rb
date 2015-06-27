@@ -1,7 +1,7 @@
 require "capybara/poltergeist"
 require "cucumber/rails"
 require Rails.root.join("lib/builders")
-require Rails.root.join("db/seeds")
+require Rails.root.join("db/seeds/bad_celebs")
 
 ActionController::Base.allow_rescue = false
 
@@ -22,3 +22,7 @@ else
 end
 
 Capybara.default_driver = Capybara.javascript_driver = (headless ? :poltergeist : :browser)
+
+Before do
+  BadCelebs.seed!
+end
