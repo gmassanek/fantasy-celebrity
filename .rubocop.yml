@@ -3,6 +3,7 @@ AllCops:
     - tmp/**/*
     - bin/**/*
     - db/schema.rb
+    - db/migrate/**/*
     - agile-direction-ui/**/*
     - spec/**/*.rb
     - vendor/bundle/**/*

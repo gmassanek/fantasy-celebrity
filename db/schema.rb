@@ -11,9 +11,52 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20150627170406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "league_point_categories", force: :cascade do |t|
+    t.integer  "league_id"
+    t.integer  "point_category_id"
+    t.string   "group"
+    t.string   "title"
+    t.decimal  "value"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "league_point_categories", ["league_id"], name: "index_league_point_categories_on_league_id", using: :btree
+  add_index "league_point_categories", ["point_category_id"], name: "index_league_point_categories_on_point_category_id", using: :btree
+
+  create_table "league_templates", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "leagues", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "league_template_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "leagues", ["league_template_id"], name: "index_leagues_on_league_template_id", using: :btree
+
+  create_table "point_categories", force: :cascade do |t|
+    t.integer  "league_template_id"
+    t.string   "group"
+    t.string   "title"
+    t.decimal  "suggested_value"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "point_categories", ["league_template_id"], name: "index_point_categories_on_league_template_id", using: :btree
+
+  add_foreign_key "league_point_categories", "leagues"
+  add_foreign_key "league_point_categories", "point_categories"
+  add_foreign_key "leagues", "league_templates"
+  add_foreign_key "point_categories", "league_templates"
 end
