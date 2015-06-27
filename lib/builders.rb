@@ -10,7 +10,7 @@ module Builders
 
   UI = Rack::Builder.new do
     use(Rack::Static, {
-      urls: %w(/assets),
+      urls: %w(/assets /fonts /images),
       root: UI_ROOT
     })
 
