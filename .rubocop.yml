@@ -6,6 +6,7 @@ AllCops:
     - agile-direction-ui/**/*
     - spec/**/*.rb
     - vendor/bundle/**/*
+    - fantasy-celebrity-front-end/**/*
 
 Metrics/LineLength:
   Max: 150
