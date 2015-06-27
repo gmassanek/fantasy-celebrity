@@ -23,5 +23,5 @@ if %w(development test).include?(Rails.env)
     system("bundle-audit") || exit
   end
 
-  task({ test: %w(rspec ui:build cucumber rubocop audit_dependencies) })
+  task({ test: %w(rspec cucumber rubocop audit_dependencies) })
 end
