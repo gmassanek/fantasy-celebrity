@@ -10,3 +10,7 @@ end
 Given(/^that league has the default positions$/) do
   @league.create_positions_from_league_template!
 end
+
+Given(/^that league has the default players$/) do
+  @league.create_players_from_league_template!
+end
