@@ -1,6 +1,6 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe League, :type => :model do
+RSpec.describe League, { type: :model } do
   describe "create_point_categories_from_league_template" do
     let(:league_template) { LeagueTemplate.find_by!({ title: "Bad Celebrity" }) }
 
@@ -29,7 +29,7 @@ RSpec.describe League, :type => :model do
     it "does not clobber point overrides" do
       league = League.create!({ league_template: league_template })
       league.create_point_categories_from_league_template!
-      league.point_categories[0].update(value: 100)
+      league.point_categories[0].update({ value: 100 })
 
       expect(league.point_categories[0].value).to eq(100)
     end
@@ -70,7 +70,7 @@ RSpec.describe League, :type => :model do
     it "does not clobber point overrides" do
       league = League.create!({ league_template: league_template })
       league.create_positions_from_league_template!
-      league.positions[0].update(count: 10)
+      league.positions[0].update({ count: 10 })
 
       expect(league.positions[0].count).to eq(10)
     end

@@ -1,6 +1,6 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe "League Point Categories", :type => :request do
+RSpec.describe "League Point Categories", { type: :request } do
   describe "INDEX" do
     let(:league_template) { LeagueTemplate.find_by!({ title: "Bad Celebrity" }) }
 
@@ -10,7 +10,7 @@ RSpec.describe "League Point Categories", :type => :request do
 
       get "/api/v1/leagues/#{league.id}/point_categories"
       expect(response).to be_success
-      expect(json_body['pointCategories'].size).to eq(league_template.point_categories.size)
+      expect(json_body["pointCategories"].size).to eq(league_template.point_categories.size)
     end
   end
 end
