@@ -17,8 +17,8 @@ end
 
 Then(/^I should see my team's players$/) do
   @team.roster_slots.each do |roster_slot|
-    expect(page).to have_content(roster_slot.player.first_name)
-    expect(page).to have_content(roster_slot.player.last_name)
+    expect(page).to have_content(roster_slot.league_player.first_name)
+    expect(page).to have_content(roster_slot.league_player.last_name)
     expect(page).to have_content(roster_slot.league_position.title)
   end
 end

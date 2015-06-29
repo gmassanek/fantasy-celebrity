@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 20150628104624) do
   create_table "roster_slots", force: :cascade do |t|
     t.integer  "team_id"
     t.integer  "league_position_id"
-    t.integer  "player_id"
+    t.integer  "league_player_id"
     t.integer  "status",             default: 0
     t.datetime "active_at"
     t.datetime "inactive_at"
@@ -114,8 +114,8 @@ ActiveRecord::Schema.define(version: 20150628104624) do
     t.datetime "updated_at",                     null: false
   end
 
+  add_index "roster_slots", ["league_player_id"], name: "index_roster_slots_on_league_player_id", using: :btree
   add_index "roster_slots", ["league_position_id"], name: "index_roster_slots_on_league_position_id", using: :btree
-  add_index "roster_slots", ["player_id"], name: "index_roster_slots_on_player_id", using: :btree
   add_index "roster_slots", ["team_id"], name: "index_roster_slots_on_team_id", using: :btree
 
   create_table "teams", force: :cascade do |t|
@@ -139,8 +139,8 @@ ActiveRecord::Schema.define(version: 20150628104624) do
   add_foreign_key "players", "positions"
   add_foreign_key "point_categories", "league_templates"
   add_foreign_key "positions", "league_templates"
+  add_foreign_key "roster_slots", "league_players"
   add_foreign_key "roster_slots", "league_positions"
-  add_foreign_key "roster_slots", "players"
   add_foreign_key "roster_slots", "teams"
   add_foreign_key "teams", "leagues"
 end
