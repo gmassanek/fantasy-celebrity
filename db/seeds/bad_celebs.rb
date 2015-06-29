@@ -1,3 +1,4 @@
+require "csv"
 require "roster_manager"
 
 class BadCelebs
@@ -16,22 +17,20 @@ class BadCelebs
       league_template.point_categories.create!({ title: title, group: group, suggested_value: value })
     end
 
-    [["Actor", 2], ["Bench", 2]].each do |title, count|
+    CSV.foreach("db/seeds/bad_celebs/league_positions.csv") do |(title, count)|
       next if league_template.positions.find_by({ title: title })
 
       league_template.positions.create!({ title: title, suggested_count: count })
     end
 
-    [["James", "Franco", "Actor"],
-     ["Leonardo", "DiCaprio", "Actor"],
-     ["Paul", "Giamati", "Actor"],
-     ["Russel", "Crow", "Actor"]].each do |first, last, pos|
+    CSV.foreach("db/seeds/bad_celebs/players.csv") do |(name, pos)|
+      first, last = name.split(" ")
       next if league_template.players.find_by({ first_name: first, last_name: last })
 
       league_template.players.create!({
         first_name: first,
         last_name: last,
-        position: Position.find_by({ title: pos })
+        position: Position.find_by!({ title: pos })
       })
     end
 
@@ -51,9 +50,16 @@ class BadCelebs
     team = league.teams.find_or_create_by!({ title: "New Team" })
 
     roster_manager = RosterManager.new(team)
-    players = Player.pluck(:id).shuffle
     positions = league.all_positions
-    roster_manager.set_roster(players.zip(positions.map(&:id)))
+
+    players_ids = league.players.pluck(:id, :league_position_id)
+    roster_slots = []
+    positions.each do |position|
+      roster_player_ids = players_ids.shuffle.find { |_, league_position_id| league_position_id == position.id }
+      roster_slots << roster_player_ids
+    end
+
+    roster_manager.set_roster(roster_slots)
 
     team
   end
