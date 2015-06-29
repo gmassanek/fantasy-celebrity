@@ -5,7 +5,7 @@ class BadCelebs
   def self.seed!
     league_template = setup_league_template
     league = setup_league(league_template)
-    setup_team(league)
+    setup_teams(league)
   end
 
   def self.setup_league_template
@@ -38,7 +38,7 @@ class BadCelebs
   end
 
   def self.setup_league(league_template)
-    league = League.find_or_create_by!({ title: "Sample league", league_template: league_template })
+    league = League.find_or_create_by!({ title: "BadCelebs", league_template: league_template })
     league.create_point_categories_from_league_template!
     league.create_positions_from_league_template!
     league.create_players_from_league_template!
@@ -46,21 +46,21 @@ class BadCelebs
     league
   end
 
-  def self.setup_team(league)
-    team = league.teams.find_or_create_by!({ title: "New Team" })
+  def self.setup_teams(league)
+    CSV.foreach("db/seeds/bad_celebs/teams.csv") do |(title, _)|
+      team = league.teams.find_or_create_by!({ title: title })
 
-    roster_manager = RosterManager.new(team)
-    positions = league.all_positions
+      roster_manager = RosterManager.new(team)
+      positions = league.all_positions
 
-    players_ids = league.players.pluck(:id, :league_position_id)
-    roster_slots = []
-    positions.each do |position|
-      roster_player_ids = players_ids.shuffle.find { |_, league_position_id| league_position_id == position.id }
-      roster_slots << roster_player_ids
+      players_ids = league.players.pluck(:id, :league_position_id)
+      roster_slots = []
+      positions.each do |position|
+        roster_player_ids = players_ids.shuffle.find { |_, league_position_id| league_position_id == position.id }
+        roster_slots << roster_player_ids
+      end
+
+      roster_manager.set_roster(roster_slots)
     end
-
-    roster_manager.set_roster(roster_slots)
-
-    team
   end
 end

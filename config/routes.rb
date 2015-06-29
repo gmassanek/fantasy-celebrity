@@ -8,7 +8,7 @@ Rails.application.routes.draw do
         resources :positions, { only: [:index] }
       end
 
-      resources :teams, { only: [:show] }
+      resources :teams, { only: [:show, :index] }
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

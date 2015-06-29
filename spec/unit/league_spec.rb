@@ -91,10 +91,7 @@ RSpec.describe League, { type: :model } do
       league.create_positions_from_league_template!
       league.create_players_from_league_template!
       expect(league.players.size).to eq(league_template.players.size)
-      expect(league.players[0].player).to eq(league_template.players[0])
-      expect(league.players[0].first_name).to eq(league_template.players[0].first_name)
-      expect(league.players[0].last_name).to eq(league_template.players[0].last_name)
-      expect(league.players[0].league_position.title).to eq(league_template.players[0].position.title)
+      expect(league.players.map(&:player_id).sort).to eq(league_template.players.map(&:id).sort)
     end
 
     it "is idempotent" do

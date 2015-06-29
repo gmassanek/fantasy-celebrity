@@ -10,6 +10,21 @@ module Api
           head :not_found
         end
       end
+
+      def index
+        teams = Team.includes({
+          roster_slots: [
+            { league_player: [:league_position] },
+            :league_position
+          ]
+        }).where({ league_id: params[:league_id] })
+
+        if teams.present?
+          render({ json: teams })
+        else
+          head :not_found
+        end
+      end
     end
   end
 end
