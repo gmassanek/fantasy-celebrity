@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       get({ "status" => "status#index" })
 
       resources :leagues do
-        resources :point_categories, { only: [:index] }
+        resources :league_point_categories, { only: [:index] }
         resources :positions, { only: [:index] }
       end
 

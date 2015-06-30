@@ -3,6 +3,7 @@ require "roster_manager"
 
 class BadCelebs
   def self.seed!
+    delete_things
     league_template = setup_league_template
     league = setup_league(league_template)
     setup_teams(league)
@@ -11,7 +12,7 @@ class BadCelebs
   def self.setup_league_template
     league_template = LeagueTemplate.find_or_create_by!({ title: "Bad Celebrity" })
 
-    [["Legal", "foo", 10]].each do |group, title, value|
+    CSV.foreach("db/seeds/bad_celebs/point_categories.csv") do |(group, title, value)|
       next if league_template.point_categories.find_by({ title: title, group: group })
 
       league_template.point_categories.create!({ title: title, group: group, suggested_value: value })
@@ -47,18 +48,20 @@ class BadCelebs
   end
 
   def self.setup_teams(league)
-    league.teams.map(&:destroy)
-
-    teams = []
     CSV.foreach("db/seeds/bad_celebs/teams.csv") do |(title, _)|
-      teams << league.teams.find_or_create_by!({ title: title })
+      league.teams.find_or_create_by!({ title: title })
     end
 
+    populate_teams_with_players(league)
+  end
+
+  def self.populate_teams_with_players(league)
     roster_assignments = {}
     9.times do |i|
-      teams.each.with_index do |team, j|
+      league.teams.each.with_index do |team, j|
         offset = (i * 13) + j
         player = league.players[offset]
+        next unless player
         roster_assignments[team] ||= []
         roster_assignments[team] << [player.id, player.league_position_id]
       end
@@ -67,5 +70,10 @@ class BadCelebs
     roster_assignments.each do |team, assignments|
       RosterManager.new(team).set_roster(assignments)
     end
+  end
+
+  def self.delete_things
+    Team.destroy_all
+    RosterSlot.destroy_all
   end
 end
