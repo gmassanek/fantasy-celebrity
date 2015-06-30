@@ -47,6 +47,7 @@ class BadCelebs
   end
 
   def self.setup_teams(league)
+    league.teams.map(&:destroy)
     CSV.foreach("db/seeds/bad_celebs/teams.csv") do |(title, _)|
       team = league.teams.find_or_create_by!({ title: title })
 

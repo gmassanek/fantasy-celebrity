@@ -20,6 +20,11 @@ When(/^I go to view that league's standings$/) do
   visit "/leagues/#{@league.id}/standings"
 end
 
+When(/^I click on a team name$/) do
+  @team = @league.teams.shuffle.first
+  page.click_link @team.title
+end
+
 Then(/^I should see that team's players$/) do
   @team.roster_slots.each do |roster_slot|
     expect(page).to have_content(roster_slot.league_player.first_name)
@@ -32,4 +37,8 @@ Then(/^I should see all the league's teams$/) do
   @league.teams.each do |team|
     expect(page).to have_content(team.title)
   end
+end
+
+Then(/^I should be on the team show page$/) do
+  expect(current_url).to match(%r{leagues/#{@league.id}/teams/#{@team.id}})
 end
