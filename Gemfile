@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "active_model_serializers", "~> 0.9.3"
 gem "jbuilder", "~> 2.0"
 gem "pg"
 gem "puma", "~> 2.11.3"

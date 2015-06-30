@@ -4,9 +4,11 @@ Rails.application.routes.draw do
       get({ "status" => "status#index" })
 
       resources :leagues do
-        resources :point_categories, { only: [:index] }
+        resources :league_point_categories, { only: [:index] }
         resources :positions, { only: [:index] }
       end
+
+      resources :teams, { only: [:show, :index] }
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.
