@@ -48,20 +48,24 @@ class BadCelebs
 
   def self.setup_teams(league)
     league.teams.map(&:destroy)
+
+    teams = []
     CSV.foreach("db/seeds/bad_celebs/teams.csv") do |(title, _)|
-      team = league.teams.find_or_create_by!({ title: title })
+      teams << league.teams.find_or_create_by!({ title: title })
+    end
 
-      roster_manager = RosterManager.new(team)
-      positions = league.all_positions
-
-      players_ids = league.players.pluck(:id, :league_position_id)
-      roster_slots = []
-      positions.each do |position|
-        roster_player_ids = players_ids.shuffle.find { |_, league_position_id| league_position_id == position.id }
-        roster_slots << roster_player_ids
+    roster_assignments = {}
+    9.times do |i|
+      teams.each.with_index do |team, j|
+        offset = (i * 13) + j
+        player = league.players[offset]
+        roster_assignments[team] ||= []
+        roster_assignments[team] << [player.id, player.league_position_id]
       end
+    end
 
-      roster_manager.set_roster(roster_slots)
+    roster_assignments.each do |team, assignments|
+      RosterManager.new(team).set_roster(assignments)
     end
   end
 end
