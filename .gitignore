@@ -12,3 +12,4 @@
 !/log/.keep
 /tmp
 /notes/*
+*.DS_Store
