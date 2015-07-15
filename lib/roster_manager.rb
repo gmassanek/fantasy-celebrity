@@ -3,19 +3,20 @@ class RosterManager
     @team = team
   end
 
-  # TODO Fix the signature of this method, currently takes an array of [player_id, position_id]
-  def set_roster(player_assignments)
+  def set_roster(roster_slots)
     @team.roster_slots.map(&:destroy)
 
-    player_assignments.each do |league_player_id, league_position_id|
-      if LeaguePlayer.find(league_player_id).league_position.id != LeaguePosition.find(league_position_id).id
-        player = LeaguePlayer.find(league_player_id)
-        league_position = LeaguePosition.find(league_position_id)
+    roster_slots.each do |roster_slot|
+      league_player_id = roster_slot.league_player_id
+      league_position_id = roster_slot.league_position_id
 
-        raise "#{player.name} is a #{player.league_position.title} and cannot be played as a #{league_position.title}"
+      if roster_slot.league_player.league_position.id != LeaguePosition.find(league_position_id).id
+        player_name = roster_slot.league_player.name
+        player_position = roster_slot.league_player.league_position.title
+        raise "#{player_name} is a #{player_position} and cannot be played as a #{roster_slot.league_position.title}"
       end
 
-      @team.roster_slots.create!({ league_player_id: league_player_id, league_position_id: league_position_id })
+      @team.roster_slots << roster_slot
     end
   end
 end

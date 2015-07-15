@@ -4,13 +4,6 @@ Given(/^I have a team in that league$/) do
   @team = @league.teams.create!({ title: "New Team" })
 end
 
-Given(/^I have set up that team with players$/) do
-  roster_manager = RosterManager.new(@team)
-  players = Player.pluck(:id).shuffle
-  positions = @league.all_positions
-  roster_manager.set_roster(players.zip(positions.map(&:id)))
-end
-
 When(/^I go to a team$/) do
   @team = @league.teams.first
   visit "/leagues/#{@league.id}/teams/#{@team.id}"

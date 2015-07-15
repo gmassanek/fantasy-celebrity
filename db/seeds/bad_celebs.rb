@@ -59,11 +59,13 @@ class BadCelebs
     roster_assignments = {}
     9.times do |i|
       league.teams.each.with_index do |team, j|
-        offset = (i * 13) + j
-        player = league.players[offset]
-        next unless player
+        next unless player = league.players[(i * 13) + j]
+
         roster_assignments[team] ||= []
-        roster_assignments[team] << [player.id, player.league_position_id]
+        roster_assignments[team] << RosterSlot.new({
+          league_player: player,
+          league_position: player.league_position
+        })
       end
     end
 
