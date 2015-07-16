@@ -25,7 +25,7 @@ class BadCelebs
     end
 
     CSV.foreach("db/seeds/bad_celebs/players.csv") do |(name, pos)|
-      first, last = name.split(" ")
+      first, last = name.split(" ", 2)
       next if league_template.players.find_by({ first_name: first, last_name: last })
 
       league_template.players.create!({
@@ -39,12 +39,7 @@ class BadCelebs
   end
 
   def self.setup_league(league_template)
-    league = League.find_or_create_by!({ title: "BadCelebs", league_template: league_template })
-    league.create_point_categories_from_league_template!
-    league.create_positions_from_league_template!
-    league.create_players_from_league_template!
-
-    league
+    league_template.create_league!("BadCelebs")
   end
 
   def self.setup_teams(league)
@@ -70,7 +65,7 @@ class BadCelebs
     end
 
     roster_assignments.each do |team, assignments|
-      RosterManager.new(team).set_roster(assignments)
+      RosterManager.new(team, { skip_validations: true }).set_roster(assignments)
     end
   end
 
