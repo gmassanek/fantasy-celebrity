@@ -7,28 +7,18 @@ class RosterManager
 
   def set_roster(roster_slots)
     validate_league_roster_positions(roster_slots)
-    validate_players_are_available(roster_slots)
 
     delete_all_existing_slots
 
-    add_new_slots(roster_slots)
-  end
-
-  private
-
-  def add_new_slots(roster_slots)
     roster_slots.each do |roster_slot|
-      league_position_id = roster_slot.league_position_id
-
-      if roster_slot.league_player.league_position.id != LeaguePosition.find(league_position_id).id
-        player_name = roster_slot.league_player.name
-        player_position = roster_slot.league_player.league_position.title
-        raise "#{player_name} is a #{player_position} and cannot be played as a #{roster_slot.league_position.title}"
-      end
+      validate_player_is_available(roster_slot)
+      validate_player_position(roster_slot)
 
       @team.roster_slots << roster_slot
     end
   end
+
+  private
 
   def delete_all_existing_slots
     @team.roster_slots.map(&:destroy)
@@ -38,22 +28,28 @@ class RosterManager
     return if @options[:skip_validations]
 
     count_by_position(roster_slots).each do |position, requested_count|
-      allowed_count = @league.positions.find { |p| p.id == position.id }.count
+      allowed_count = @league.positions.find(position.id).count
       if requested_count > allowed_count
         raise "There are too many #{position.title.pluralize}"
       end
     end
   end
 
-  def validate_players_are_available(roster_slots)
+  def validate_player_is_available(roster_slot)
     return if @options[:skip_validations]
 
-    roster_slots.each do |roster_slot|
-      existing_slot = RosterSlot.find_by({ league_player_id: roster_slot.league_player_id })
-      if existing_slot
-        raise "#{roster_slot.league_player.name} is already on #{existing_slot.team.title}'s roster"
-      end
-    end
+    existing_slot = RosterSlot.find_by({ league_player_id: roster_slot.league_player_id })
+
+    raise "#{roster_slot.league_player.name} is already on #{existing_slot.team.title}'s roster" if existing_slot
+  end
+
+  def validate_player_position(roster_slot)
+    new_position = roster_slot.league_position
+    player_position = roster_slot.league_player.league_position
+
+    return unless  new_position.strict? && player_position.id != new_position.id
+
+    raise "#{roster_slot.league_player.name} is a #{player_position.title} and cannot be played as a #{roster_slot.league_position.title}"
   end
 
   def count_by_position(roster_slots)

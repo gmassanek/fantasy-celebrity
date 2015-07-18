@@ -18,10 +18,10 @@ class BadCelebs
       league_template.point_categories.create!({ title: title, group: group, suggested_value: value })
     end
 
-    CSV.foreach("db/seeds/bad_celebs/league_positions.csv") do |(title, count)|
+    CSV.foreach("db/seeds/bad_celebs/league_positions.csv") do |(title, count, strict)|
       next if league_template.positions.find_by({ title: title })
 
-      league_template.positions.create!({ title: title, suggested_count: count })
+      league_template.positions.create!({ title: title, suggested_count: count, strict: strict })
     end
 
     CSV.foreach("db/seeds/bad_celebs/players.csv") do |(name, pos)|
@@ -43,8 +43,8 @@ class BadCelebs
   end
 
   def self.setup_teams(league)
-    CSV.foreach("db/seeds/bad_celebs/teams.csv") do |(title, _)|
-      league.teams.find_or_create_by!({ title: title })
+    CSV.foreach("db/seeds/bad_celebs/teams.csv") do |(title, owner)|
+      league.teams.find_or_create_by!({ title: title, owner: owner })
     end
 
     populate_teams_with_players(league)
@@ -52,21 +52,20 @@ class BadCelebs
 
   def self.populate_teams_with_players(league)
     roster_assignments = {}
-    9.times do |i|
-      league.teams.each.with_index do |team, j|
-        player = league.players[(i * 13) + j]
-        next unless player
+    CSV.foreach("db/seeds/bad_celebs/players.csv") do |(name, _, owner, lpos)|
+      team = Team.find_by({ owner: owner })
+      player = league.players.find { |p| p.name == name }
+      position = league.positions.find { |p| p.title == lpos }
 
-        roster_assignments[team] ||= []
-        roster_assignments[team] << RosterSlot.new({
-          league_player: player,
-          league_position: player.league_position
-        })
-      end
+      roster_assignments[team] ||= []
+      roster_assignments[team] << RosterSlot.new({
+        league_player: player,
+        league_position: position
+      })
     end
 
     roster_assignments.each do |team, assignments|
-      RosterManager.new(team, { skip_validations: true }).set_roster(assignments)
+      RosterManager.new(team).set_roster(assignments)
     end
   end
 

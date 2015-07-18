@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150628104624) do
+ActiveRecord::Schema.define(version: 20150718170105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,8 +48,9 @@ ActiveRecord::Schema.define(version: 20150628104624) do
     t.integer  "position_id"
     t.string   "title"
     t.integer  "count"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "strict",      default: true
   end
 
   add_index "league_positions", ["league_id"], name: "index_league_positions_on_league_id", using: :btree
@@ -97,8 +98,9 @@ ActiveRecord::Schema.define(version: 20150628104624) do
     t.integer  "league_template_id"
     t.string   "title"
     t.integer  "suggested_count"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "strict",             default: true
   end
 
   add_index "positions", ["league_template_id"], name: "index_positions_on_league_template_id", using: :btree
@@ -123,6 +125,7 @@ ActiveRecord::Schema.define(version: 20150628104624) do
     t.string   "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "owner"
   end
 
   add_index "teams", ["league_id"], name: "index_teams_on_league_id", using: :btree

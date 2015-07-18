@@ -29,7 +29,8 @@ class League < ActiveRecord::Base
       positions.create!({
         position: position,
         title: position.title,
-        count: position.suggested_count
+        count: position.suggested_count,
+        strict: position.strict
       })
     end
   end
