@@ -54,7 +54,8 @@ class BadCelebs
     roster_assignments = {}
     9.times do |i|
       league.teams.each.with_index do |team, j|
-        next unless player = league.players[(i * 13) + j]
+        player = league.players[(i * 13) + j]
+        next unless player
 
         roster_assignments[team] ||= []
         roster_assignments[team] << RosterSlot.new({

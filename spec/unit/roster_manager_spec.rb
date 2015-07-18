@@ -2,7 +2,6 @@ require "rails_helper"
 require "roster_manager"
 
 RSpec.describe RosterManager do
-
   let(:league) { LeagueTemplate.last.create_league!("New Bad Celebs") }
   let(:team) { league.teams.create!({ title: "Sweet Team Bro" }) }
   let(:roster_manager) { RosterManager.new(team) }
@@ -16,7 +15,7 @@ RSpec.describe RosterManager do
   describe "#set_roster" do
     it "creates active roster slots" do
       player = league.players.shuffle.first
-      roster_slots = [RosterSlot.new(:league_player => player, :league_position => player.league_position)]
+      roster_slots = [RosterSlot.new({ league_player: player, league_position: player.league_position })]
       roster_manager.set_roster(roster_slots)
 
       expect(team.roster_slots.count).to eq(1)
@@ -26,31 +25,31 @@ RSpec.describe RosterManager do
 
     describe "validates that the new team" do
       it "has players in their real positions" do
-        roster_slots = [RosterSlot.new(:league_player => mel_gibson, :league_position => reality_star)]
-        expect {
+        roster_slots = [RosterSlot.new({ league_player: mel_gibson, league_position: reality_star })]
+        expect do
           roster_manager.set_roster(roster_slots)
-        }.to raise_error("Mel Gibson is a Actor and cannot be played as a Reality Star")
+        end.to raise_error("Mel Gibson is a Actor and cannot be played as a Reality Star")
       end
 
       it "has players in valid league positions" do
         roster_slots = [
-          RosterSlot.new(:league_player => ocho_cinco, :league_position => athlete),
-          RosterSlot.new(:league_player => mike_tyson, :league_position => athlete)
+          RosterSlot.new({ league_player: ocho_cinco, league_position: athlete }),
+          RosterSlot.new({ league_player: mike_tyson, league_position: athlete })
         ]
-        expect {
+        expect do
           roster_manager.set_roster(roster_slots)
-        }.to raise_error("There are too many Athletes")
+        end.to raise_error("There are too many Athletes")
       end
 
       it "has players from other people's teams" do
         other_team = league.teams.create!({ title: "A Different Team" })
-        roster_slots = [ RosterSlot.new(:league_player => ocho_cinco, :league_position => athlete) ]
+        roster_slots = [RosterSlot.new({ league_player: ocho_cinco, league_position: athlete })]
         RosterManager.new(other_team).set_roster(roster_slots)
 
-        roster_slots = [ RosterSlot.new(:league_player => ocho_cinco, :league_position => athlete) ]
-        expect {
+        roster_slots = [RosterSlot.new({ league_player: ocho_cinco, league_position: athlete })]
+        expect do
           roster_manager.set_roster(roster_slots)
-        }.to raise_error("Chad Ocho Cinco is already on A Different Team's roster")
+        end.to raise_error("Chad Ocho Cinco is already on A Different Team's roster")
       end
     end
   end
