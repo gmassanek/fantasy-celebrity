@@ -18,6 +18,35 @@ When(/^I click on a team name$/) do
   page.click_link @team.title
 end
 
+When(/^I edit that team$/) do
+  page.click_link "Edit Roster"
+end
+
+When(/^I setup a valid player change$/) do
+  joan = @team.roster_slots.find { |rs| rs.league_player.name == "Joan Rivers" }
+  dakota = @team.roster_slots.find { |rs| rs.league_player.name == "Dakota Fanning" }
+  within ".roster-slot-#{joan.id}" do
+    page.find("select").select(dakota.league_position.title)
+  end
+
+  within ".roster-slot-#{dakota.id}" do
+    page.find("select").select(joan.league_position.title)
+  end
+end
+
+When(/^I setup an invalid player change$/) do
+  snooki = @team.roster_slots.find { |rs| rs.league_player.name == "Snooki" }
+  within ".roster-slot-#{snooki.id}" do
+    page.find("select").select("Miscellaneous")
+  end
+end
+
+Then(/^I see why the change was invalid$/) do
+  page.click_button("Save Changes")
+
+  expect(page).to have_content("There are too many Miscellaneous")
+end
+
 Then(/^I should see that team's players$/) do
   @team.roster_slots.each do |roster_slot|
     expect(page).to have_content(roster_slot.league_player.first_name)
@@ -34,4 +63,15 @@ end
 
 Then(/^I should be on the team show page$/) do
   expect(current_url).to match(%r{leagues/#{@league.id}/teams/#{@team.id}})
+end
+
+Then(/^my team is updated$/) do
+  before = @team.roster_slots.map(&:id)
+  page.click_button("Save Changes")
+
+  expect(page).to have_content("Edit Roster")
+  expect(current_url).to match(%r{leagues/#{@league.id}/teams/#{@team.id}$})
+
+  after = Team.find(@team.id).roster_slots.map(&:id)
+  expect(before).to_not eq(after)
 end

@@ -53,4 +53,26 @@ RSpec.describe "Teams", { type: :request } do
       expect(json_body["teams"]).to be
     end
   end
+
+  describe "PUT ROSTER" do
+    let(:league) { LeagueTemplate.find_by!({ title: "Bad Celebrity" }).create_league!("Foo League") }
+    let(:team) { league.teams.create!({ title: "Team" }) }
+
+    it "includes base team attributes" do
+      player1, player2 = team.league.players.shuffle.first(2)
+      data = {
+        team: {
+          roster_slots: [
+            { league_position_id: player1.league_position.id, league_player_id: player1.id },
+            { league_position_id: player2.league_position.id, league_player_id: player2.id }
+          ]
+        }
+      }
+      expect do
+        put "/api/v1/teams/#{team.id}/roster_slots", data
+      end.to change(RosterSlot, :count).by(2)
+
+      expect(response).to be_success
+    end
+  end
 end

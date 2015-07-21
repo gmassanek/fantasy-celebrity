@@ -57,4 +57,8 @@ class League < ActiveRecord::Base
     end
     all_positions
   end
+
+  def flex_positions
+    @flex_positions ||= positions.reject(&:strict?)
+  end
 end

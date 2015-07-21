@@ -15,3 +15,17 @@ Feature: Teams
     When I go to view that league's standings
     And I click on a team name
     Then I should be on the team show page
+
+  Scenario: You can edit a team's roster
+    Given the BadCeleb League seeds have been run
+    When I go to a team
+    And I edit that team
+    And I setup a valid player change
+    Then my team is updated
+
+  Scenario: You see an error message when a team is updated incorrectly
+    Given the BadCeleb League seeds have been run
+    When I go to a team
+    And I edit that team
+    And I setup an invalid player change
+    Then I see why the change was invalid

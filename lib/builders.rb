@@ -7,7 +7,7 @@ module Builders
   API = Rack::Builder.new do
     use Rack::Cors do
       allow do
-        origins("localhost")
+        origins("localhost*")
         resource("*", { headers: :any, methods: :get })
       end
     end
