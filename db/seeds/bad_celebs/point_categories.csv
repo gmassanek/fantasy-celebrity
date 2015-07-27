@@ -5,7 +5,6 @@ Legal,Fraud,30
 Legal,Tax Evasion,30
 Legal,Insider Trading,25
 Legal,Murder,100
-Legal,Rape,80
 Legal,Weapon posession,25
 Legal,Car crash (your fault),20
 Legal,Bribe,20
@@ -20,9 +19,9 @@ Legal,Public Intoxication,20
 Legal,Domestic Violence,15
 Legal,Miscellaneous arrest,20
 Legal,Disorderly Conduct,20
-Legal,Getting convicted for the above,20
-Legal,Getting acquitted for the above,20
-Legal,Serving jail time for the above,20
+Legal,Getting convicted of any crime,20
+Legal,Getting acquitted of any crime,20
+Legal,Serving jail time of any crime,20
 Fighting,Fighting in public (general),15
 Fighting,Assaulting Paparazzi,20
 Fighting,Getting Punched and not fighting back,-10
@@ -34,7 +33,7 @@ Career,Nude pictures leaked,25
 Career,Crossing Industry Lines (NBA to music; music to acting; NBA to MLB),20
 Career,Appearing on a Reality Star show,20
 Career,Having your own Reality Star show,30
-Career,Nominated for a major industry award,
+Career,Nominated for a major industry award,-5
 Career,Winning a major industry award,-10
 Career,"being in a gossip story with gary busey, mike tyson, ",15
 Career,start dating someone more than 15 yrs younger,5
@@ -47,7 +46,7 @@ Marital,Marriage after 6 months,-15
 Marital,Cheating on gf/bf,15
 Marital,Divorce within 6 months of marriage,
 Marital,Cheating on spouse,30
-Marital,Coming out gay,50
+Marital,Coming out of the closet,50
 Marital,Adoption,-15
 Marital,Peeing or Pooping on sexual partner,60
 Health,Confirmed contraction of an STD,30
@@ -76,7 +75,6 @@ Health,Admitting drug use for the first time,10
 Health,Becoming paralized,50
 Health,Getting shot,50
 Health,Caught crossdressing,30
-Health,Incest,50
 Health,Caught beefing in public,20
 Health,Committed to psych ward,50
 Miscellaneous,Having a fast food restaurant named after you,150
