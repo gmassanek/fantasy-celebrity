@@ -39,7 +39,7 @@ class BadCelebs
   end
 
   def self.setup_league(league_template)
-    league_template.create_league!("BadCelebs")
+    league_template.leagues.find_by(title: "BadCelebs") || league_template.create_league!("BadCelebs")
   end
 
   def self.setup_teams(league)
