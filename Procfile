@@ -1,3 +1,4 @@
 api: bin/rackup -p 3000
 api-log: tail -f -n 0 log/development.log
-ui: cd fantasy-celebrity-front-end && ember serve
+ui-watch: cd ../fantasy-celebrity-react && gulp
+#ui-open: open ../fantasy-celebrity-react/public/index.html && tail -f /dev/null
