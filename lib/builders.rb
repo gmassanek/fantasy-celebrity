@@ -2,7 +2,7 @@ require "rack"
 require ::File.expand_path("../../config/environment", __FILE__)
 
 module Builders
-  UI_ROOT = "public".freeze
+  UI_ROOT = "./fantasy-celebrity-react/public".freeze
 
   API = Rack::Builder.new do
     use Rack::Cors do
